@@ -117,6 +117,12 @@
         <span class="menu-title">Blogs</span>
       </a>
     </li>
+    <li id="cities" class="nav-item">
+      <a class="nav-link">
+        <i class="menu-icon mdi mdi-alphabetical"></i>
+        <span class="menu-title">Cities</span>
+      </a>
+    </li>
 
 
 
@@ -323,6 +329,33 @@
 
         $('#blogs').on('click',function(){
             displyBlogs();
+        });
+    });
+</script>
+
+<!-- script to show blogs page -->
+<script>
+    $(document).ready(function(){
+        var token = $('input[name="_token"]').val();
+        function displayCities(){
+            $.ajax({
+              url:'{{route('cities')}}',
+                cache:false,
+                method:'GET',
+                beforeSend: function()
+                {  
+                    $("#loading-overlay").show();
+                },
+                success:function(data){
+                    $('#odda').empty();
+                    $('#odda').append(data);
+                    $("#loading-overlay").hide();
+                }
+            });
+        }
+
+        $('#cities').on('click',function(){
+            displayCities();
         });
     });
 </script>

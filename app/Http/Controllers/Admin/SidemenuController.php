@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use App\Models\Tag;
+use App\Models\City;
 use App\Models\Category;
 use App\Models\Blogcategory;
 use Illuminate\Http\Request;
@@ -12,6 +13,12 @@ use App\Models\Reportword;
 
 class SidemenuController extends Controller
 {
+
+    public function cities(){
+        $cities = City::all();
+        return view('Admin/cities',compact('cities'));
+    }
+
     public function unapprovedQuestions(){
         $tags = Tag::select('id','name')->latest()->get();
         $categories = Category::select('id','name')->latest()->get();
