@@ -15,11 +15,11 @@ class CreateCitiesTable extends Migration
             $table->string('city_id');
             $table->string('lat');
             $table->string('long');
-            $table->string('weather');
-            $table->double('temprature');
-            $table->string('feels_like');
-            $table->string('humidity');
-            $table->string('wind_speed');
+            $table->string('weather')->nullable();
+            $table->string('temprature')->nullable();
+            $table->string('feels_like')->nullable();
+            $table->string('humidity')->nullable();
+            $table->string('wind_speed')->nullable();
             $table->timestamps();
         });
     }
