@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use Illuminate\Http\Request;
+use Validator;
 
 class CityController extends Controller
 {
@@ -32,8 +33,12 @@ class CityController extends Controller
             $city->feels_like = $obj->main->feels_like;
             $city->humidity = $obj->main->humidity;
             $city->wind_speed = $obj->wind->speed;
+            $city->lat = $obj->coord->lat;
+            $city->long = $obj->coord->lon;
+            
             $city->save();
         }
+        // return "Done";
         
     }
    
@@ -49,7 +54,24 @@ class CityController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $rules = array(
+            'city_id' => 'required|unique:cities',
+            'city_name' => 'required',
+        );
+        $error = Validator::make($request->all(),$rules);
+        if($error->fails()){
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        $city = new City();
+        $city->city_id = $request->city_id;
+        $city->city_name = $request->city_name;
+        $city->save();
+        
+        if ($city->exists) {
+            return response()->json(['success' => 'New city addedsuccessfuly'], 200);
+        } else {
+            return response()->json(['error' => 'Error'], 422);
+        }
     }
 
     public function show(City $city)
@@ -68,8 +90,14 @@ class CityController extends Controller
     }
 
     
-    public function destroy(City $city)
+    public function destroy(Request $request)
     {
-        //
+        $city = City::where('city_id',$request->id)->first();
+        if($city){
+            $city->delete();
+            return response()->json(['success' => 'City deleted successfuly'], 200);
+        }else{
+            return response()->json(['error' => 'Delete unsuccessful, City not found'], 404);
+        }
     }
 }

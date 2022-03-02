@@ -333,7 +333,7 @@
     });
 </script>
 
-<!-- script to show blogs page -->
+<!-- script to show cities page -->
 <script>
     $(document).ready(function(){
         var token = $('input[name="_token"]').val();
@@ -360,5 +360,31 @@
     });
 </script>
 
+<!-- script to show dashboard -->
+<script>
+    $(document).ready(function(){
+        var token = $('input[name="_token"]').val();
+        function displayDash(){
+            $.ajax({
+              url:'{{route('citydash')}}',
+                cache:false,
+                method:'GET',
+                beforeSend: function()
+                {  
+                    $("#loading-overlay").show();
+                },
+                success:function(data){
+                    $('#odda').empty();
+                    $('#odda').append(data);
+                    $("#loading-overlay").hide();
+                }
+            });
+        }
+
+        $('#dash').on('click',function(){
+            displayDash();
+        });
+    });
+</script>
 @endsection
 

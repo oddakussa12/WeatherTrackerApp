@@ -13,8 +13,8 @@ class CreateCitiesTable extends Migration
             $table->id();
             $table->string('city_name');
             $table->string('city_id');
-            $table->string('lat');
-            $table->string('long');
+            $table->string('lat')->nullable();
+            $table->string('long')->nullable();
             $table->string('weather')->nullable();
             $table->string('temprature')->nullable();
             $table->string('feels_like')->nullable();

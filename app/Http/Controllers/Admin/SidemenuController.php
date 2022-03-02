@@ -19,6 +19,11 @@ class SidemenuController extends Controller
         return view('Admin/cities',compact('cities'));
     }
 
+    public function dashboard(){
+        $cities = City::all();
+        return view('dash',compact('cities'));
+    }
+
     public function unapprovedQuestions(){
         $tags = Tag::select('id','name')->latest()->get();
         $categories = Category::select('id','name')->latest()->get();

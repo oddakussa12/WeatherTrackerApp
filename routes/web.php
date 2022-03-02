@@ -2,6 +2,9 @@
 
 Route::get('/cities', 'Admin\SidemenuController@cities')->name('cities');
 Route::get('/getWeatherData', 'CityController@getWeatherData')->name('getWeatherData');
+Route::get('/citydash', 'Admin\SidemenuController@dashboard')->name('citydash');
+Route::post('/citystore','CityController@store')->name('city.store');
+Route::delete('/citydelete','CityController@destroy')->name('city.delete');
 
 
 
