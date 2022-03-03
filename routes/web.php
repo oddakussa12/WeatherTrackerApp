@@ -5,6 +5,7 @@ Route::get('/getWeatherData', 'CityController@getWeatherData')->name('getWeather
 Route::get('/citydash', 'Admin\SidemenuController@dashboard')->name('citydash');
 Route::post('/citystore','CityController@store')->name('city.store');
 Route::delete('/citydelete','CityController@destroy')->name('city.delete');
+Route::put('/cityupdate','CityController@update')->name('city.edit');
 
 
 

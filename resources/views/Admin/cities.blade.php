@@ -1,5 +1,6 @@
 @include('/modals/addCityModal')
 @include('/modals/deleteModal')
+@include('/modals/editTagModal')
 
 <div class="row">
   <div class="col-lg-12 grid-margin stretch-card">
@@ -34,7 +35,7 @@
                         <td>{{$city->long}}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-outline-primary">
+                                <button type="button" id="editCity" class="btn btn-outline-primary">
                                     <i class="mdi mdi-lead-pencil"></i>
                                 </button>
                                 <button type="button" id="deleteCity" class="btn btn-outline-danger">
@@ -170,4 +171,74 @@
             deleteCity(id,token);
         });
     });
+</script>
+
+<script>
+  $(document).ready(function(){
+    // show edit category modal
+    $('body').on('click','#editCity',function(e){
+        e.preventDefault();
+        $('#editTag').modal('show');
+
+        $tr = $(this).closest('tr');
+        var data = $tr.children("td").map(function(){
+            return $(this).text();
+        }).get();
+        console.log(data);
+
+        $('#itemId').val(data[0]);
+        $('#name_en').val(data[1]);
+        $('#name_am').val(data[2]);
+    });
+    $('#edit_tag_form').on('submit', function(event){
+        event.preventDefault();
+        if($('#EditTagButton').val() == "Edit Tag"){
+            $.ajax({
+                url:"{{ route('city.edit') }}",
+                method:"PUT",
+                data: new FormData(this),
+                contentType:false,
+                cache:false,
+                processData:false,
+                dataType:'json',
+                beforeSend: function()
+                {   
+                    $('#EditTagButton').html('<i class="fa fa-circle-o-notch fa-spin"></i>');                            
+                },
+                success:function(data){
+                    var html = '';
+                    if(data.errors){
+                        html = '<div class="alert alert-danger alert-block">';
+                        for(var count = 0; count<data.errors.length; count++){
+                            html += '<p>' + data.errors[count] + '</p>';
+                        }
+                        html += '</div>';
+                        $('#EditTagButton').html('Edit Tag');
+                        // render error or success message in html variable to span element with id value form_result
+                        $('#edit_tag_form_result').html(html);
+                    }
+                    if(data.success){
+                        success:function(data){
+                            setTimeout(function() { odda(); }, 500);
+                                function odda(){
+                                    $.ajax({
+                                        url:'{{route('cities')}}',
+                                        cache: false,
+                                        type:'GET',
+                                        beforeSend: function()
+                                        {  
+                                            $("#loading-overlay").show();
+                                        },
+                                        success:function(data){
+                                            $("#odda").html(data);
+                                            $("#loading-overlay").hide();
+                                        }
+                                    });
+                                }
+                        }
+                    }
+                })
+        }
+    });
+  });
 </script>
